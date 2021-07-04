@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { View, ScrollView, TextInput } from "react-native";
+import { View, ScrollView, TextInput, Image } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { POSTS } from "../shared/posts";
 import { USER } from "../shared/user";
@@ -7,6 +7,7 @@ import { PROMPTS } from "../shared/prompts";
 import { FlatList, ImageBackground } from "react-native";
 import { ListItem, Divider } from "react-native-elements";
 import PostBox from "./PostBox";
+import { baseUrl } from "../shared/baseUrl";
 
 const userStreak = USER.map((user) => `${user.postStreak}`);
 
@@ -32,7 +33,28 @@ class Home extends Component {
   render() {
     const renderPostItem = ({ item }) => {
       return (
-        <ListItem title={item.date} subtitle={item.text} containerStyle={{}} />
+        <Card
+          containerStyle={{
+            flexDirection: "column",
+            backgroundColor: "rgb(224,235,235)",
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingBottom: 10,
+            }}
+          >
+            <Image
+              source={{ uri: baseUrl + "images/ideaPostIcon.png" }}
+              style={{ width: 50, height: 50 }}
+            />
+            <Text>{item.typeTitle}</Text>
+          </View>
+          <ListItem title={item.date} subtitle={item.text} />
+        </Card>
       );
     };
     return (
@@ -66,15 +88,12 @@ class Home extends Component {
           <Text h4 style={{ textAlign: "center", marginTop: 10 }}>
             Most Recent Post:
           </Text>
-          <Card containerStyle={{ backgroundColor: "rgb(224,235,235)" }}>
-            <FlatList
-              data={this.state.posts.filter(
-                (post) => post.id === this.state.posts.length
-              )}
-              renderItem={renderPostItem}
-              keyExtractor={(item) => item.id.toString()}
-            />
-          </Card>
+
+          <FlatList
+            data={this.state.posts.slice(-1)}
+            renderItem={renderPostItem}
+            keyExtractor={(item) => item.id}
+          />
         </ImageBackground>
       </ScrollView>
     );

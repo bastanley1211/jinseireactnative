@@ -1,0 +1,63 @@
+{
+  "user": [
+    {
+      "id": 0,
+      "firstName": "Bethany",
+      "lastName": "Stanley",
+      "age": 27,
+      "email": "bastanley1211@gmail.com",
+      "password": "***********",
+      "photo": "../assets/images/userPhoto.jpg",
+      "postStreak": 5
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "typeTitle": "A gratitude post by",
+      "text": "I am grateful that I can wake up this morning with air in my lungs, drink a warm cup of tea when I wake up, and have an amazing husband.",
+      "date": "2018-10-25T16:30Z"
+    },
+    {
+      "id": 2,
+      "typeTitle": "A gratitude post by",
+      "text": "I am grateful that I can wake up this morning with air in my lungs, drink a warm cup of tea when I wake up, and have an amazing husband.",
+      "date": "2018-10-25T16:30Z"
+    },
+    {
+      "id": 3,
+      "typeTitle": "A gratitude post by",
+      "text": "I am grateful that I can wake up this morning with air in my lungs, drink a warm cup of tea when I wake up, and have an amazing husband.",
+      "date": "2018-10-25T16:30Z"
+    },
+    {
+      "id": 4,
+      "typeTitle": "A gratitude post by",
+      "text": "I am grateful that I can wake up this morning with air in my lungs, drink a warm cup of tea when I wake up, and have an amazing husband.",
+      "date": "2018-10-25T16:30Z"
+    },
+    {
+      "id": 5,
+      "typeTitle": "A gratitude post",
+      "text": "I am grateful that I can wake up this morning with air in my lungs, drink a warm cup of tea when I wake up, and have an amazing husband. LOLs",
+      "date": "2018-10-25T16:30Z"
+    }
+  ],
+  "prompts": [
+    {
+      "id": 1,
+      "promptQ": "What is one thing that you are grateful for today?\nWrite 3-5 sentences about WHAT and WHY you are grateful for it.",
+      "postHeading": "A gratitude post by"
+    },
+    {
+      "id": 2,
+      "promptQ": "You have one month off from work or school, and someone has handed you $100,000. Describe your dream traveling adventure!",
+      "postHeading": "A travel fantasy by"
+    },
+    {
+      "id": 3,
+      "promptQ": "What are the three main obstacles keeping you from doing the things you actually want to do with your time? Write 3-5 sentences exploring this predicament.",
+      "postHeading": "A reflection by"
+    }
+  ]
+}

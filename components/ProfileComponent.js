@@ -8,6 +8,9 @@ import {
   StyleSheet,
   StatusBar,
 } from "react-native";
+import { baseUrl } from "../shared/baseUrl";
+
+const testImage = `${baseUrl}/images/testPhoto.jpg`;
 
 class Profile extends Component {
   constructor(props) {
@@ -23,7 +26,7 @@ class Profile extends Component {
     const renderUserData = ({ item }) => {
       return (
         <View>
-          <Image source={{ uri: item.photo }} style={styles.userPhotoFrame} />
+          <Image source={{ uri: testImage }} style={styles.userPhotoFrame} />
           <View style={styles.rowWrapper}>
             <Text h4>Name: </Text>
             <Text>
@@ -90,11 +93,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   userPhotoFrame: {
+    resizeMode: "cover",
     borderRadius: 100,
-    height: 250,
-    width: 250,
+    height: 150,
+    width: 150,
     marginTop: 15,
-    flex: 1,
+    alignSelf: "center",
   },
 });
 
