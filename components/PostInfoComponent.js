@@ -42,8 +42,8 @@ class PostInfo extends Component {
 
 const styles = {
   postWrapper: {
-    margin: "30px",
-    padding: "30px",
+    margin: 30,
+    padding: 30,
   },
 };
 

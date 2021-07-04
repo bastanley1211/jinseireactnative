@@ -7,7 +7,7 @@ export const USER = [
     email: "bastanley1211@gmail.com",
     password: "***********",
     friends: 24,
-    photo: require("../assets/images/userPhoto.jpg"),
+    photo: "../assets/images/userPhoto.jpg",
     postStreak: 5,
   },
 ];

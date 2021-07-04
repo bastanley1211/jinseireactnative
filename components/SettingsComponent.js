@@ -41,7 +41,7 @@ const styles = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "baseline",
-    padding: "20px",
+    padding: 20,
   },
 };
 

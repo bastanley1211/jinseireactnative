@@ -15,15 +15,15 @@ const userName = USER.map((user) => `${user.firstName} ${user.lastName}`);
 
 function Post(props) {
   return (
-    <View className="container m-3 mx-auto p-3 bg-light" style={post}>
-      <Text h3 className="text-center">
+    <View style={post}>
+      <Text h3>
         {postTypeHeading} {userName}
       </Text>
       <View>
         <Image source="https://upload.wikimedia.org/wikipedia/commons/6/64/Simple_light_bulb_graphic.png" />
-        <Text className="d-inline">{RenderPostData()}</Text>
+        <Text>{RenderPostData()}</Text>
       </View>
-      <Text className="text-right">
+      <Text>
         Created:{" "}
         {
           POSTS.map((post) => {

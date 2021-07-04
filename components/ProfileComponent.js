@@ -1,17 +1,21 @@
 import React, { Component } from "react";
-import { ScrollView } from "react-native";
-import { Card, Text, ListItem, Button, Image } from "react-native-elements";
-import { POSTS } from "../shared/posts";
+import { Text, Button, Image } from "react-native-elements";
 import { USER } from "../shared/user";
 import {
-  SafeAreaView,
   View,
+  ScrollView,
   FlatList,
   StyleSheet,
   StatusBar,
 } from "react-native";
 
 class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: USER,
+    };
+  }
   static navigationOptions = {
     title: "Profile",
   };
@@ -19,50 +23,45 @@ class Profile extends Component {
     const renderUserData = ({ item }) => {
       return (
         <View>
-          <View>
-            <Card
-              title={`${item.firstName} ${item.lastName}`}
-              style={styles.userPhotoFrame}
-              image={item.photo}
-            />
-            <Text>Images only show when in a card</Text>
-          </View>
+          <Image source={{ uri: item.photo }} style={styles.userPhotoFrame} />
           <View style={styles.rowWrapper}>
             <Text h4>Name: </Text>
-            <ListItem title={`${item.firstName} ${item.lastName}`} />
+            <Text>
+              {item.firstName} {item.lastName}
+            </Text>
           </View>
           <View style={styles.rowWrapper}>
             <Text h4>Age: </Text>
-            <ListItem title={item.age} />
+            <Text>{item.age}</Text>
           </View>
           <View style={styles.rowWrapper}>
             <Text h4>Journal Post Streak: </Text>
-            <ListItem title={`${item.postStreak} days`} />
+            <Text>{item.postStreak} days</Text>
           </View>
           <View style={styles.rowWrapper}>
             <Text h4>Email: </Text>
-            <ListItem title={item.email} />
+            <Text>{item.email}</Text>
           </View>
           <View style={styles.rowWrapper}>
             <Text h4>Password: </Text>
-            <ListItem title={item.password} />
+            <Text>{item.password}</Text>
           </View>
         </View>
       );
     };
     return (
-      <SafeAreaView style={styles.profileWrapper}>
+      <ScrollView contentContainerStyle={styles.profileWrapper}>
         <FlatList
-          data={USER}
+          data={this.state.user}
           renderItem={renderUserData}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
         />
         <Button
           title="Update Profile"
-          style={{ maxWidth: "150px", textAlign: "center", margin: "0 auto" }}
+          style={{ maxWidth: 400, textAlign: "center" }}
           color="#808080"
         />
-      </SafeAreaView>
+      </ScrollView>
     );
   }
 }
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
   },
   profileWrapper: {
     width: "100%",
-    background: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255,255,255,0.05)",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -88,11 +87,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    padding: "20px",
+    padding: 20,
   },
   userPhotoFrame: {
-    borderRadius: "100px",
-    backgroundSize: "contain",
+    borderRadius: 100,
+    height: 250,
+    width: 250,
+    marginTop: 15,
+    flex: 1,
   },
 });
 

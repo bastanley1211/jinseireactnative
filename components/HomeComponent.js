@@ -4,7 +4,7 @@ import { Card, Text } from "react-native-elements";
 import { POSTS } from "../shared/posts";
 import { USER } from "../shared/user";
 import { PROMPTS } from "../shared/prompts";
-import { FlatList } from "react-native";
+import { FlatList, ImageBackground } from "react-native";
 import { ListItem, Divider } from "react-native-elements";
 import PostBox from "./PostBox";
 
@@ -32,37 +32,51 @@ class Home extends Component {
   render() {
     const renderPostItem = ({ item }) => {
       return (
-        <View>
-          <ListItem title={item.date} subtitle={item.text} />
-        </View>
+        <ListItem title={item.date} subtitle={item.text} containerStyle={{}} />
       );
     };
     return (
-      <View style={{ padding: "30px" }}>
-        <View style={{ textAlign: "center", marginBottom: "20px" }}>
-          <Text h1>Welcome Back,</Text>
-          <Text h1>{RenderUserData()}</Text>
-        </View>
-        <Divider orientation="horizontal" />;
-        <View style={{ textAlign: "center", marginBottom: "10px" }}>
-          <Text h2>
-            Current Journal Streak:{" "}
+      <ScrollView style={{ padding: 30 }}>
+        <ImageBackground
+          source={require("../assets/images/linedpaperbg.png")}
+          style={{ width: "100%", height: "100%" }}
+        >
+          <View style={{ textAlign: "center", marginBottom: 10 }}>
+            <Text style={{ textAlign: "center", fontSize: "24px" }}>
+              Welcome Back,
+            </Text>
+            <Text h3 style={{ textAlign: "center" }}>
+              {RenderUserData()}
+            </Text>
+
+            <Divider orientation="horizontal" />
+
             <Text
-              style={{ textDecorationStyle: "underline", fontWeight: "bold" }}
+              style={{ textAlign: "center", fontSize: "14px", marginTop: 10 }}
             >
-              {userStreak} days
-            </Text>{" "}
-          </Text>
-        </View>
-        <View>
+              Current Journal Streak:{" "}
+              <Text
+                style={{ textDecorationStyle: "solid", fontWeight: "bold" }}
+              >
+                {userStreak} days
+              </Text>
+            </Text>
+          </View>
           <PostBox />
-        </View>
-        <FlatList
-          data={this.state.posts}
-          renderItem={renderPostItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
+          <Text h4 style={{ textAlign: "center", marginTop: 10 }}>
+            Most Recent Post:
+          </Text>
+          <Card containerStyle={{ backgroundColor: "rgb(224,235,235)" }}>
+            <FlatList
+              data={this.state.posts.filter(
+                (post) => post.id === this.state.posts.length
+              )}
+              renderItem={renderPostItem}
+              keyExtractor={(item) => item.id.toString()}
+            />
+          </Card>
+        </ImageBackground>
+      </ScrollView>
     );
   }
 }
