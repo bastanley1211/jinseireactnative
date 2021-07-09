@@ -1,0 +1,9 @@
+export const PROMPTS_LOADING = "PROMPTS_LOADING";
+export const PROMPTS_FAILED = "PROMPTS_FAILED";
+
+export const ADD_POSTS = "ADD_POSTS";
+export const POSTS_LOADING = "POSTS_LOADING";
+export const POSTS_FAILED = "POSTS_FAILED";
+
+export const USER_LOADING = "USER_LOADING";
+export const USER_FAILED = "USER_FAILED";
