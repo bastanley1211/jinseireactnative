@@ -2,8 +2,8 @@
   "user": [
     {
       "id": 0,
-      "firstName": "Bethany",
-      "lastName": "Stanley",
+      "firstname": "Bethany",
+      "lastname": "Stanley",
       "age": 27,
       "email": "bastanley1211@gmail.com",
       "password": "***********",

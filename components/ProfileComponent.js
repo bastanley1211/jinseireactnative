@@ -1,14 +1,31 @@
 import React, { Component } from "react";
-import { Text, Button, Image } from "react-native-elements";
-import { USER } from "../shared/user";
+import { Text, Button, Image, Input } from "react-native-elements";
 import {
   View,
   ScrollView,
   FlatList,
   StyleSheet,
   StatusBar,
+  Modal,
 } from "react-native";
 import { baseUrl } from "../shared/baseUrl";
+import { connect } from "react-redux";
+import { updateUser, addUser, fetchUser } from "../redux/ActionCreators";
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    posts: state.posts,
+  };
+};
+
+const mapDispatchToProps = {
+  updateUser: (firstname, lastname, age, email, password) =>
+    updateUser(firstname, lastname, age, email, password),
+  addUser: (firstname, lastname, age, email, password) =>
+    addUser(firstname, lastname, age, email, password),
+  fetchUser,
+};
 
 const testImage = `${baseUrl}/images/testPhoto.jpg`;
 
@@ -16,38 +33,65 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: USER,
+      showModal: false,
     };
+  }
+
+  handleChange() {
+    const { firstname, lastname, age, email, password } = this.state;
+    this.props.updateUser(firstname, lastname, age, email, password);
+    this.toggleModal();
+  }
+
+  resetForm() {
+    this.setState({
+      firstname: "",
+      lastname: "",
+      age: 0,
+      email: "",
+      password: "",
+    });
+  }
+
+  toggleModal() {
+    this.setState({ showModal: !this.state.showModal });
   }
   static navigationOptions = {
     title: "Profile",
   };
+
+  componentDidMount() {
+    this.props.fetchUser();
+  }
+
   render() {
     const renderUserData = ({ item }) => {
+      const posts = this.props.posts.posts;
+      const numPosts = posts.length.toString();
       return (
         <View>
           <Image source={{ uri: testImage }} style={styles.userPhotoFrame} />
           <View style={styles.rowWrapper}>
             <Text h4>Name: </Text>
-            <Text>
-              {item.firstName} {item.lastName}
+            <Text style={styles.profileData}>
+              {item.firstname} {item.lastname}
             </Text>
           </View>
           <View style={styles.rowWrapper}>
             <Text h4>Age: </Text>
-            <Text>{item.age}</Text>
+            <Text style={styles.profileData}>{item.age}</Text>
           </View>
           <View style={styles.rowWrapper}>
-            <Text h4>Journal Post Streak: </Text>
-            <Text>{item.postStreak} days</Text>
+            <Text h4>Total Posts:</Text>
+            <Text style={styles.profileData}>{numPosts}</Text>
           </View>
           <View style={styles.rowWrapper}>
             <Text h4>Email: </Text>
-            <Text>{item.email}</Text>
+            <Text style={styles.profileData}>{item.email}</Text>
           </View>
           <View style={styles.rowWrapper}>
             <Text h4>Password: </Text>
-            <Text>{item.password}</Text>
+            <Text style={styles.profileData}>{item.password}</Text>
           </View>
         </View>
       );
@@ -55,15 +99,80 @@ class Profile extends Component {
     return (
       <ScrollView contentContainerStyle={styles.profileWrapper}>
         <FlatList
-          data={this.state.user}
+          data={this.props.user.user}
           renderItem={renderUserData}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id}
         />
         <Button
           title="Update Profile"
           style={{ maxWidth: 400, textAlign: "center" }}
-          color="#808080"
+          buttonStyle={{ color: "white", backgroundColor: "grey" }}
+          onPress={() => this.toggleModal()}
         />
+        <Modal
+          transparent={false}
+          visible={this.state.showModal}
+          onRequestClose={() => this.toggleModal()}
+        >
+          <View
+            style={{ color: "black", marginTop: "auto", marginBottom: "auto" }}
+          >
+            <Input
+              label="First Name"
+              placeholder="First Name"
+              value={this.props.user.firstname}
+              onChangeText={(firstname) => this.setState({ firstname })}
+            />
+            <Input
+              label="Last Name"
+              placeholder="Last Name"
+              value={this.props.user.lastname}
+              onChangeText={(lastname) => this.setState({ lastname })}
+              containerStyle={{ color: "black" }}
+            />
+            <Input
+              label="Age"
+              placeholder="Age"
+              value={this.props.user.age}
+              onChangeText={(age) => this.setState({ age })}
+            />
+            <Input
+              label="Email"
+              placeholder="Email"
+              value={this.props.user.email}
+              onChangeText={(email) => this.setState({ email })}
+            />
+            <Input
+              label="Password"
+              placeholder="Password"
+              value={this.props.user.password}
+              onChangeText={(password) => this.setState({ password })}
+            />
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+            >
+              <Button
+                title="Submit"
+                titleStyle={{ fontSize: 24 }}
+                buttonStyle={{
+                  color: "white",
+                  backgroundColor: "skyblue",
+                  textAlign: "center",
+                }}
+                onPress={() => {
+                  this.handleChange();
+                  this.resetForm();
+                }}
+              />
+              <Button
+                title="Cancel"
+                titleStyle={{ fontSize: 24 }}
+                buttonStyle={{ color: "white", backgroundColor: "grey" }}
+                onPress={() => this.toggleModal()}
+              />
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     );
   }
@@ -99,7 +208,11 @@ const styles = StyleSheet.create({
     width: 150,
     marginTop: 15,
     alignSelf: "center",
+    justifyContent: "center",
+  },
+  profileData: {
+    fontSize: 18,
   },
 });
 
-export default Profile;
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

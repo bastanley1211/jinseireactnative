@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { FlatList, ImageBackground } from "react-native";
 import { ListItem } from "react-native-elements";
-import { POSTS } from "../shared/posts";
+import { baseUrl } from "../shared/baseUrl";
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts,
+  };
+};
 
 class JournalHistory extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      posts: POSTS,
-    };
-  }
-
   static navigationOptions = {
     title: "Journal History",
   };
@@ -30,11 +30,11 @@ class JournalHistory extends Component {
 
     return (
       <ImageBackground
-        source={require("../assets/images/linedpaperbg.png")}
+        source={{ uri: baseUrl + "/images/linedpaperbg.png" }}
         style={{ width: "100%", height: "100%" }}
       >
         <FlatList
-          data={this.state.posts}
+          data={this.props.posts.posts}
           renderItem={renderPostItem}
           keyExtractor={(item) => item.id.toString()}
         />
@@ -43,4 +43,4 @@ class JournalHistory extends Component {
   }
 }
 
-export default JournalHistory;
+export default connect(mapStateToProps)(JournalHistory);

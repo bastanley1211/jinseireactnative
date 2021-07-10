@@ -1,45 +1,78 @@
-import React, { useState } from "react";
-import { PROMPTS } from "../shared/prompts";
+import React, { Component } from "react";
 import { TextInput, View, Button } from "react-native";
-import { Text, ListItem } from "react-native-elements";
+import { Text, ListItem, Input } from "react-native-elements";
+import { connect } from "react-redux";
+import { baseUrl } from "../shared/baseUrl";
+import { FlatList } from "react-native";
+import { createPost } from "../redux/ActionCreators";
 
-const pickPost = PROMPTS.map((prompt) => `${prompt.promptQ}`);
-const todaysPost = pickPost[0];
-
-const PostFormTextInput = (props) => {
-  return (
-    <TextInput
-      style={{ backgroundColor: "white", padding: 15 }}
-      {...props}
-      editable
-      maxLength={300}
-    />
-  );
+const mapStateToProps = (state) => {
+  return {
+    prompts: state.prompts,
+    posts: state.posts,
+  };
 };
 
-const PostForm = (props) => {
-  const [value, onChangeText] = useState(
-    "Type your answer to the daily journal prompt here..."
-  );
-  return (
-    <View style={styles.postBox}>
-      <Text style={{ textAlign: "center", marginBottom: 15, fontSize: "18px" }}>
-        {todaysPost}
-      </Text>
-      <PostFormTextInput
-        multiline
-        numberOfLines={4}
-        onChangeText={(text) => onChangeText(text)}
-        value={value}
-      />
-      <Button
-        color="black"
-        title="Post"
-        onPress={() => alert(`Today's post:\n ${value}`)}
-      />
-    </View>
-  );
+const mapDispatchToProps = {
+  createPost: (date, typeTitle, text) => createPost(date, typeTitle, text),
 };
+
+class PostForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: "",
+      typeTitle: "",
+      date: new Date(),
+    };
+  }
+
+  handlePost(text) {
+    const { typeTitle, date } = this.state;
+    this.props.createPost(date, typeTitle, text);
+  }
+
+  resetForm() {
+    this.setState({
+      text: "",
+      typeTitle: "",
+      date: new Date(),
+    });
+  }
+
+  render() {
+    const renderTodaysPrompt = ({ item }) => {
+      return (
+        <Text style={{ padding: 10, paddingBottom: 20 }}>{item.promptQ}</Text>
+      );
+    };
+    return (
+      <View style={styles.postBox}>
+        <FlatList
+          data={this.props.prompts.prompts.slice(-1)}
+          renderItem={renderTodaysPrompt}
+          keyExtractor={(item) => item.id}
+        />
+
+        <Input
+          multiline
+          numberOfLines={5}
+          value={this.state.text}
+          placeholder="Please type today's post here..."
+          onChangeText={(text) => this.setState({ text: text })}
+        />
+        <Button
+          color="black"
+          title="Post"
+          onPress={() => {
+            this.handlePost(this.state.text);
+            this.resetForm();
+          }}
+        />
+      </View>
+    );
+  }
+}
 
 const styles = {
   postBox: {
@@ -51,4 +84,4 @@ const styles = {
   },
 };
 
-export default PostForm;
+export default connect(mapStateToProps, mapDispatchToProps)(PostForm);

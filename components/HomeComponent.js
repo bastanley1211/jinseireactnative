@@ -1,29 +1,24 @@
-import React, { Component, useState } from "react";
-import { View, ScrollView, TextInput, Image } from "react-native";
+import React, { Component } from "react";
+import { View, ScrollView, Image } from "react-native";
 import { Card, Text } from "react-native-elements";
-import { POSTS } from "../shared/posts";
-import { USER } from "../shared/user";
-import { PROMPTS } from "../shared/prompts";
 import { FlatList, ImageBackground } from "react-native";
-import { ListItem, Divider } from "react-native-elements";
+import { ListItem } from "react-native-elements";
 import PostBox from "./PostBox";
 import { baseUrl } from "../shared/baseUrl";
+import { connect } from "react-redux";
 
-const userStreak = USER.map((user) => `${user.postStreak}`);
-
-function RenderUserData() {
-  const userName = USER.map((user) => `${user.firstName} ${user.lastName}`);
-  return <>{userName}</>;
-}
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts,
+    user: state.user,
+    prompts: state.prompts,
+  };
+};
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      posts: POSTS,
-      user: USER,
-      prompts: PROMPTS,
-    };
+    this.state = {};
   }
 
   static navigationOptions = {
@@ -31,6 +26,15 @@ class Home extends Component {
   };
 
   render() {
+    const renderUserData = ({ item }) => {
+      return (
+        <View>
+          <Text style={{ textAlign: "center", fontSize: 32 }}>
+            {item.firstname} {item.lastname}
+          </Text>
+        </View>
+      );
+    };
     const renderPostItem = ({ item }) => {
       return (
         <Card
@@ -58,31 +62,21 @@ class Home extends Component {
       );
     };
     return (
-      <ScrollView style={{ padding: 30 }}>
+      <ScrollView>
         <ImageBackground
-          source={require("../assets/images/linedpaperbg.png")}
+          source={{ uri: baseUrl + "/images/linedpaperbg.png" }}
           style={{ width: "100%", height: "100%" }}
         >
-          <View style={{ textAlign: "center", marginBottom: 10 }}>
-            <Text style={{ textAlign: "center", fontSize: "24px" }}>
+          <View style={{ textAlign: "center", marginBottom: 10, padding: 20 }}>
+            <Text style={{ textAlign: "center", fontSize: 24 }}>
               Welcome Back,
             </Text>
-            <Text h3 style={{ textAlign: "center" }}>
-              {RenderUserData()}
-            </Text>
 
-            <Divider orientation="horizontal" />
-
-            <Text
-              style={{ textAlign: "center", fontSize: "14px", marginTop: 10 }}
-            >
-              Current Journal Streak:{" "}
-              <Text
-                style={{ textDecorationStyle: "solid", fontWeight: "bold" }}
-              >
-                {userStreak} days
-              </Text>
-            </Text>
+            <FlatList
+              data={this.props.user.user}
+              renderItem={renderUserData}
+              keyExtractor={(item) => item.id}
+            />
           </View>
           <PostBox />
           <Text h4 style={{ textAlign: "center", marginTop: 10 }}>
@@ -90,7 +84,7 @@ class Home extends Component {
           </Text>
 
           <FlatList
-            data={this.state.posts.slice(-1)}
+            data={this.props.posts.posts.slice(-1)}
             renderItem={renderPostItem}
             keyExtractor={(item) => item.id}
           />
@@ -100,4 +94,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default connect(mapStateToProps)(Home);

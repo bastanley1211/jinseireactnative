@@ -1,6 +1,6 @@
-import { createStoreHook, combineReducers, applyMiddleware } from "react-redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import logger from "redux-log";
+import logger from "redux-logger";
 import { posts } from "./posts";
 import { prompts } from "./prompts";
 import { user } from "./user";
